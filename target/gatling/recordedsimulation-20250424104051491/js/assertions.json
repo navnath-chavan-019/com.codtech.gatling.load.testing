@@ -1,0 +1,10 @@
+{
+  "simulation": "com.gatling.codtech.RecordedSimulation",
+  "simulationId": "recordedsimulation",
+  "start": 1745491251491,
+  "description": "",
+  "scenarios": ["RecordedSimulation"],
+  "assertions": [
+
+  ]
+}
