@@ -121,4 +121,4 @@ Enable Logging: Investigate server logs for failures during peak times.
 ---
 
 ## Gatling Result Chart
-![Image](https://github.com/user-attachments/assets/c0a512e0-c59c-48bc-abb5-ae1f916bd1ff)
+![Image](https://github.com/user-attachments/assets/3f6dd4b8-f37f-462f-9629-ed6b2450ac92)
