@@ -23,100 +23,102 @@ As per the following instructions, I performed load testing on a web application
 
 ---
 
-## 📊 Gatling Load Test Summary
+📋 Test Overview
+Simulation Name: recordedsimulation (Load Testing)
 
-### 🔍 **Overview**
-The load test simulates user interactions with various API endpoints, including GET, POST, PUT, and DELETE operations. The duration of the test was approximately **27 seconds**, focusing on assessing the system's ability to handle requests under a specific user load.
+Start Time: 2025-04-30 08:48:01
+
+Duration: 71 seconds
+
+Total Requests: 2800
+
+Successful (OK): 2100 (75%)
+
+Failed (KO): 700 (25%)
+
+Main Error: status.find.in(200,201,202,203,204,205,206,207,208,209,304).find(401) – Indicates unauthorized errors (401 status).
+
+📊 Global Statistics
+
+Metric	Value
+Requests Total	2800
+OK Requests	2100 (75%)
+KO Requests	700 (25%)
+Min Response Time	1429 ms
+Max Response Time	26480 ms
+Mean Response Time	8552 ms
+Standard Deviation	4975 ms
+Percentiles (OK)	
+- 50th	7547 ms
+- 75th	8751 ms
+- 95th	15179 ms
+- 99th	24872 ms
+📉 Detailed Request Analysis (Few Examples)
+
+Request Name	Total	OK	KO	Mean Response (ms)	Error %
+request_1	200	200	0	1429	0%
+request_6	100	0	100	9745	100%
+request_10	100	0	100	8142	100%
+request_13	200	200	0	7802	0%
+request_16	200	200	0	8734	0%
+Many request groups show a 100% failure rate, especially those around request_6 to request_12.
+
+📈 Graph Analysis
+✅ Active Users Over Time
+Users ramped up and dropped gradually.
+
+Flat line near end indicates all virtual users completed their executions.
+
+⏱ Response Time Distribution
+Spikes between 6s–12s (6000–12000 ms).
+
+Red bars (KO) indicate failed requests are common within this response window.
+
+📐 Percentile Graphs
+Shows wide range in response times.
+
+95th and 99th percentiles significantly higher, indicating performance degradation for top requests.
+
+🔄 Requests/Responses per Second
+Request Rate: Peaked around 2200/sec.
+
+Response Rate: Many KO (red) responses clustered together, indicating possible server/resource issue.
+
+❌ Errors
+Total Errors: 700 (100% of all KO)
+
+Error Type: 401 Unauthorized
+
+Likely due to:
+
+Missing/expired token
+
+Incorrect authentication headers
+
+Session timeout or improper login setup
+
+✅ Summary & Recommendations
+Issues Identified:
+
+High failure rate (25%) due to 401 errors.
+
+Poor response times for some requests (up to 26 seconds).
+
+Requests request_6 to request_12 are consistently failing.
+
+Recommendations:
+
+Fix Authentication: Ensure tokens/sessions are valid during test run.
+
+Optimize Backend: High response times suggest performance bottlenecks.
+
+Increase Test Duration: 71 seconds might be too short for sustained load testing.
+
+Test in Stages: Split into warm-up, steady load, and stress phases.
+
+Enable Logging: Investigate server logs for failures during peak times.
 
 ---
-
-### 📌 **Key Metrics**
-
-#### 🕒 **Response Time Analysis**
-- **Global Max:** 21242 ms  
-- **Global Min:** 1163 ms  
-- **Mean:** ~2135 ms  
-- **Standard Deviation:** 1629 ms  
-- Higher latency was observed particularly in failed requests (`KO`), which impacts the average.
-
-#### 📈 **Number of Requests**
-- **Total Requests:** 4000  
-  - **Successful (OK):** 2700 (67.5%)  
-  - **Failed (KO):** 1300 (32.5%)  
-- Most failures are concentrated in the `Get User` endpoint.
-
-#### 📊 **Request Execution Breakdown**
-| Endpoint       | Total | OK  | KO  | Success Rate |
-|----------------|-------|-----|-----|---------------|
-| Get User       | 800   | 75  | 725 | 9.38%         |
-| Create User    | 800   | 800 | 0   | 100%          |
-| Update User    | 800   | 800 | 0   | 100%          |
-| Delete User    | 800   | 800 | 0   | 100%          |
-
-- **Get User API** has a significantly low success rate and is the primary failure point.
-
-#### ❗ **Errors**
-- **Handshake Timeout:** 
-  - **Type:** `i.n.s.ssl.SslHandshakeTimeoutException`  
-  - **Description:** Handshake timed out after 10000ms  
-  - **Count:** 1300  
-  - **Error Rate:** 32.5% of total requests
-
----
-
-### 📈 **Performance Over Time**
-- Users ramped up quickly and remained stable for most of the test before tapering off.
-- All API calls were active and tracked, with consistent load until the end.
-
----
-
-### 📉 **Response Time Distribution**
-- The majority of `OK` responses were under 2000 ms.
-- A visible number of `KO` responses occurred early and were mostly due to timeouts.
-
----
-
-### 📊 **Response Time Percentiles Over Time**
-- Percentile metrics (50th, 75th, 95th, 99th) show that:
-  - A large portion of requests fell within a similar time range.
-  - However, spikes in max response times skew overall results.
-
----
-
-### 📦 **Number of Requests per Second**
-- Peak request rate reached around **120 requests/second**, followed by a steady rate until the tapering phase.
-- User count remained mostly stable during this period.
-
----
-
-### 📦 **Number of Responses per Second**
-- Response rates mirrored the request rate, with a notable chunk of successful (`OK`) responses.
-- `KO` responses spiked mid-way through the test, highlighting performance pressure or resource limitations.
-
----
-
-## ✅ **Conclusions**
-
-### 🟢 **Overall Performance**
-- **Stable execution** for most endpoints (POST, PUT, DELETE).
-- Good throughput in terms of request/response handling.
-
-### 🔴 **Failures**
-- **High failure rate (32.5%)**, primarily in the `Get User` endpoint.
-- Root cause: SSL handshake timeout indicating possible backend/server-side SSL configuration issues or resource exhaustion.
-
-### 🟡 **Stability**
-- Performance was mostly stable during the active user phase.
-- Spike in failures suggests issues occur under stress or when nearing server limits.
-
-### 🔧 **Improvement Areas**
-1. **Investigate SSL timeout** on `Get User` endpoint.
-2. **Optimize backend response time** (high average and max values).
-3. **Add retries or timeouts handling logic** to improve robustness.
-4. **Monitor backend infrastructure** during tests for resource spikes (e.g., CPU, memory).
-
----
-
 
 ## Gatling Result Chart
 ![Image](https://github.com/user-attachments/assets/c0a512e0-c59c-48bc-abb5-ae1f916bd1ff)
